@@ -8,13 +8,12 @@ import com.bank.product.domain.ProductDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping
@@ -28,14 +27,13 @@ public class CreditComponentController {
 	@Autowired
 	Generator generator;
 
+	@Autowired
+	ServicesController servicesController;
 	private int creditID;
 	private List<CreditItem> creditItemList;
 
-	private void setCreditNumber(CustomerDTO customerDTO, ProductDTO productDTO, CreditDTO creditDTO, int creditID) {
-		productDTO.setCreditID(creditID);
-		customerDTO.setCreditID(creditID);
-		creditDTO.setCreditID(creditID);
-	};
+	@Autowired
+	CreditNumberGeneratorController creditNumberGeneratorController;
 
 	@GetMapping("CreateCredit")
 	public int createCredit(@PathVariable CustomerDTO customerDTO,
@@ -46,13 +44,13 @@ public class CreditComponentController {
 		int creditNumber = generator.generateCreditNumber();
 
 		//adding creditNumber to all elements
-		setCreditNumber(customerDTO, productDTO, creditDTO, creditNumber);
+		creditNumberGeneratorController.setCreditNumber(customerDTO, productDTO, creditDTO, creditNumber);
 
 		// Creating product
-		createProduct(productDTO);
+		servicesController.createProduct(productDTO);
 
 		// Creating consumer
-		createCustomer(customerDTO);
+		servicesController.createCustomer(customerDTO);
 
 		// Saving credit data
 		creditController.saveCredit(creditDTO);
@@ -63,35 +61,5 @@ public class CreditComponentController {
 		return creditNumber;
 	}
 
-
-	@GetMapping("test")
-	public String test(){
-		return "test test test";
-	}
-
-	@RequestMapping(value = "getCustomer?creditID={id}", method = RequestMethod.GET)
-	public CustomerDTO getCustomer(@RequestParam Integer id) {
-
-		Map<String, Integer> uriVariables = new HashMap<>();
-		uriVariables.put("id", id);
-
-		ResponseEntity<CustomerDTO> responseEntity = new RestTemplate().getForEntity(
-				"http://localhost:8000/customer/getAllCustomer", CustomerDTO.class, id);
-
-		CustomerDTO response = responseEntity.getBody();
-		return response;
-	}
-
-	@RequestMapping(value = "createCustomer", method = RequestMethod.POST)
-	public void createCustomer(@RequestBody CustomerDTO customerDTO) {
-		ResponseEntity<CustomerDTO> responseEntity = new RestTemplate().postForEntity(
-				"http://localhost:8000/customer/createCustomer", customerDTO, CustomerDTO.class);
-	}
-
-	@RequestMapping(value = "createProduct", method = RequestMethod.POST)
-	public void createProduct(@RequestBody ProductDTO productDTO) {
-		ResponseEntity<ProductDTO> responseEntity = new RestTemplate().postForEntity(
-				"http://localhost:8100/product/createProduct", productDTO, ProductDTO.class);
-	}
 
 }
