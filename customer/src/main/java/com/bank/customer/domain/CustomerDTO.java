@@ -1,7 +1,5 @@
 package com.bank.customer.domain;
 
-//@Getter
-//@AllArgsConstructor
 public class CustomerDTO {
 
 	private int creditID;
@@ -25,7 +23,6 @@ public class CustomerDTO {
 	public CustomerDTO(){
 
 	}
-
 
 	public int getCreditID() {
 		return creditID;

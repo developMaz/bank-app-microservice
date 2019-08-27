@@ -5,10 +5,7 @@ import com.bank.product.exception.ProductNotFoundException;
 import com.bank.product.mapper.ProductMapper;
 import com.bank.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,17 +26,13 @@ public class ProductController {
 		productService.createProduct(productMapper.mapToProductDB(productDTO));
 	}
 
-	@RequestMapping(value = "getAllProduct", method = RequestMethod.GET)
+	@RequestMapping(value = "getAllProducts", method = RequestMethod.GET)
 	public List<ProductDTO> getAllProducts() {
 		return productMapper.mapToProductDTOList(productService.getAllProducts());
 	}
 
-//	public List<CreditItem> getProducts(List<CreditItem> creditItemList) throws Exception {
-//		return productService.getProducts(creditItemList);
-//	}
-
 	@RequestMapping(value = "deleteProduct", method = RequestMethod.DELETE)
-	public void deleteProduct(final int creditID) throws Exception {
+	public void deleteProduct(@RequestParam final int creditID) throws Exception {
 		productService.deleteProduct(productService.getProductById(creditID).orElseThrow(ProductNotFoundException::new));
 	}
 

@@ -1,6 +1,6 @@
 package com.bank.credit.controller;
 
-import com.bank.credit.domain.CreditDTO;
+import com.bank.credit.domain.Credit;
 import com.bank.credit.exception.CreditNotFoundException;
 import com.bank.credit.mapper.CreditMapper;
 import com.bank.credit.service.CreditService;
@@ -23,30 +23,31 @@ public class CreditController {
 	@Autowired
 	private CreditMapper creditMapper;
 
-//	public List<CreditItem> generateAndSetCreditNumber(CustomerDTO customerDTO, ProductDTO productDTO, CreditDTO creditDTO){
-//		int creditNumber = generator.generateCreditNumber();
-//		CreditInfo creditInfo = new CreditInfo();
-//		CreditItem creditItem = new CreditItem(new CreditInfo);
-//		creditItemList.add(new CreditItem(n))productDTO.setCreditID(creditID);
-//		customerDTO.setCreditID(creditID);
-//		creditDTO.setCreditID(creditID);
-//	}
+	@Autowired
+	ExternalServicesController externalServicesController;
 
 	@RequestMapping(value = "createCustomer", method = RequestMethod.POST,  consumes = APPLICATION_JSON_VALUE)
-	public void saveCredit(@RequestBody CreditDTO creditDTO) {
-		creditService.saveCredit(creditMapper.mapToCreditDB(creditDTO));
+	public void saveCredit(@RequestBody Credit credit) {
+		creditService.saveCredit(creditMapper.mapToCreditDB(credit));
 	}
 
-	public List<CreditDTO> getAllCredits() {
+	public List<Credit> getAllCredits() {
 		return creditMapper.mapToCreditDTOList(creditService.getAllCredits());
 	}
 	public void deleteCredit(final int creditID) throws Exception {
 		creditService.deleteCredit(creditService.getCreditById(creditID).orElseThrow(CreditNotFoundException::new));
 	}
 
-	public CreditDTO getCreditByCreditID(int creditID) throws Exception{
-		return creditMapper.mapToCreditDTO(creditService.getCreditById(creditID).orElseThrow(CreditNotFoundException::new));
+	public Credit getCreditByCreditID(int creditID) throws Exception{
+		return creditMapper.mapToCredit(creditService.getCreditById(creditID).orElseThrow(CreditNotFoundException::new));
 	}
 
+	public void deleteWholeCreditInfo(final int creditID) throws Exception{
+
+		deleteCredit(creditID);
+		externalServicesController.deleteCustomer(creditID);
+		externalServicesController.deleteProduct(creditID);
+
+	}
 
 }

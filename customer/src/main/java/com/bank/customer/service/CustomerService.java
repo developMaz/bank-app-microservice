@@ -1,9 +1,9 @@
 package com.bank.customer.service;
 
 import com.bank.customer.domain.CustomerDB;
+import com.bank.customer.exceptions.CustomerNotFoundException;
 import com.bank.customer.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @Service
 public class CustomerService {
-
 
 	@Autowired
 	CustomerRepository customerRepository;
@@ -31,4 +30,10 @@ public class CustomerService {
 	public void deleteCustomer(CustomerDB customerDB){
 		customerRepository.delete(customerDB);
 	}
+
+	public CustomerDB getCustomerByCreditID(int creditID) throws Exception{
+		return getCustomerById(creditID).orElseThrow(CustomerNotFoundException::new);
+	}
+
+
 }

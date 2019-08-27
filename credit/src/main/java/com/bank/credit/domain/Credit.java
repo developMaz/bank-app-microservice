@@ -1,20 +1,20 @@
 package com.bank.credit.domain;
 
-public class CreditDTO {
+public class Credit {
 
 	private int creditID;
 	private String creditName;
 
-	public CreditDTO(int creditID, String creditName) {
+	public Credit(int creditID, String creditName) {
 		this.creditID = creditID;
 		this.creditName = creditName;
 	}
 
-	public CreditDTO(String creditName) {
+	public Credit(String creditName) {
 		this.creditName = creditName;
 	}
 
-	public CreditDTO() {
+	public Credit() {
 
 	}
 

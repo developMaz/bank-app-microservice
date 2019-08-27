@@ -22,10 +22,6 @@ public class ProductComponent {
 		return productController.getAllProducts();
 	}
 
-//	public List<CreditItem> getProducts(List<CreditItem> creditItemList) throws Exception {
-//		return productService.getProducts(creditItemList);
-//	}
-
 	public void deleteProduct(final int creditID) throws Exception {
 		productController.deleteProduct(creditID);
 	}

@@ -7,15 +7,19 @@ public class CreditInfo {
 
 	private CustomerDTO customerDTO;
 	private ProductDTO productDTO;
-	private CreditDTO creditDTO;
+	private Credit credit;
 
-
-	public CreditInfo(CreditDTO creditDTO) {
-		this.creditDTO = creditDTO;
+	public CreditInfo(CustomerDTO customerDTO, Credit credit) {
+		this.customerDTO = customerDTO;
+		this.credit = credit;
 	}
 
 	public CreditInfo(CustomerDTO customerDTO) {
 		this.customerDTO = customerDTO;
+	}
+
+	public CreditInfo(Credit credit) {
+		this.credit = credit;
 	}
 
 	public CreditInfo(ProductDTO productDTO) {
@@ -33,8 +37,8 @@ public class CreditInfo {
 		return productDTO;
 	}
 
-	public CreditDTO getCreditDTO() {
-		return creditDTO;
+	public Credit getCredit() {
+		return credit;
 	}
 
 	public void setCustomerDTO(CustomerDTO customerDTO) {
@@ -45,7 +49,7 @@ public class CreditInfo {
 		this.productDTO = productDTO;
 	}
 
-	public void setCreditDTO(CreditDTO creditDTO) {
-		this.creditDTO = creditDTO;
+	public void setCredit(Credit credit) {
+		this.credit = credit;
 	}
 }

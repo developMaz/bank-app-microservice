@@ -28,18 +28,18 @@ public class CustomerController {
 		customerService.createCustomer(customerMapper.mapToCustomerDB(customerDTO));
 	}
 
-	@RequestMapping(value = "getAllCustomer", method = RequestMethod.GET)
+	@RequestMapping(value = "getAllCustomers", method = RequestMethod.GET)
 	public List<CustomerDTO> getAllCustomers() {
 		return customerMapper.mapToCustomerDTOList(customerService.getAllCustomers());
 	}
 
 	@RequestMapping(value = "deleteCustomer", method = RequestMethod.DELETE)
-	public void deleteCustomer(final int creditID) throws Exception {
+	public void deleteCustomer(@RequestParam final Integer creditID) throws Exception {
 		customerService.deleteCustomer(customerService.getCustomerById(creditID).orElseThrow(CustomerNotFoundException::new));
 	}
 
 	@RequestMapping(value = "getCustomer", method = RequestMethod.GET)
-	public CustomerDTO getCustomerByCreditID(@RequestParam  Integer creditID) throws Exception{
+	public CustomerDTO getCustomerByCreditID(@RequestParam Integer creditID) throws Exception{
 		return customerMapper.mapToCustomerDTO(customerService.getCustomerById(creditID).orElseThrow(CustomerNotFoundException::new));
 	}
 
